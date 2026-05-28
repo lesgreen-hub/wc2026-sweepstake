@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Sweepstake — Race Roster Oceania</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #020F2A;
+    --navy2: #071830;
+    --red: #C8102E;
+    --gold: #F5A623;
+    --green: #1A6B3C;
+    --white: #ffffff;
+    --gray-100: #f4f5f7;
+    --gray-200: #e8eaed;
+    --gray-400: #9aa0ab;
+    --gray-600: #5f6672;
+    --gray-800: #2c3140;
+    --taken-bg: #fff8e6;
+    --taken-border: #f5c842;
+    --taken-text: #7a5200;
+    --avail-bg: #edf7f0;
+    --avail-border: #5cb87a;
+    --avail-text: #1a5c30;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    background: #f0f2f5;
+    font-family: 'Inter', sans-serif;
+    color: var(--gray-800);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+  .hero-bar { height: 6px; background: linear-gradient(90deg, var(--red) 0%, var(--gold) 50%, var(--green) 100%); }
+  .hero-body { padding: 2.25rem 1.5rem 2rem; text-align: center; }
+  .hero-org {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); margin-bottom: 0.5rem;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; letter-spacing: 2px;
+    color: var(--white); line-height: 1;
+    margin-bottom: 0.15rem;
+  }
+  .hero-year { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--gold); line-height: 1; margin-bottom: 0.75rem; }
+  .hero-hosts { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 1.25rem; letter-spacing: 0.5px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white); font-size: 13px; font-weight: 500;
+    padding: 8px 20px; border-radius: 30px;
+  }
+  .hero-dates { margin-top: 0.75rem; font-size: 12px; color: rgba(255,255,255,0.3); }
+
+  /* CARDS */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+  .stat-card {
+    background: var(--white); border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    padding: 1rem 1.1rem; display: flex; align-items: center; gap: 12px;
+  }
+  .stat-icon { font-size: 22px; }
+  .stat-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .stat-val { font-size: 14px; font-weight: 600; color: var(--gray-800); }
+
+  /* SECTION */
+  .card {
+    background: var(--white); border-radius: var(--radius);
+    border: 1px solid var(--gray-200); padding: 1.35rem; margin-bottom: 1.1rem;
+  }
+  .card-title {
+    font-size: 11px; font-weight: 600; color: var(--gray-400);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 1.1rem; display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+
+  /* GROUPS */
+  .groups-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .group-card {
+    background: var(--gray-100); border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-200); padding: 9px 11px;
+  }
+  .group-letter {
+    font-size: 10px; font-weight: 700; color: var(--red);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 6px; padding-bottom: 5px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .team { font-size: 12px; color: var(--gray-800); padding: 2px 0; line-height: 1.4; }
+
+  /* FORM */
+  .field { margin-bottom: 1.1rem; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--gray-600); margin-bottom: 6px; }
+  .field label span { font-size: 11px; color: var(--gray-400); font-weight: 400; margin-left: 4px; }
+  .field input, .field select {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm); font-size: 14px; font-family: 'Inter', sans-serif;
+    color: var(--gray-800); background: var(--white); outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--red); }
+
+  /* TRACKER */
+  .tracker { margin-top: 10px; background: var(--gray-100); border-radius: var(--radius-sm); padding: 12px; }
+  .tracker-head { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .tracker-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip { font-size: 11px; padding: 3px 9px; border-radius: 12px; border: 1px solid; font-weight: 500; }
+  .chip.available { background: var(--avail-bg); border-color: var(--avail-border); color: var(--avail-text); }
+  .chip.taken { background: var(--taken-bg); border-color: var(--taken-border); color: var(--taken-text); }
+  .tracker-legend { display: flex; gap: 14px; margin-top: 8px; font-size: 11px; color: var(--gray-400); }
+  .legend-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; border: 1px solid; }
+  .refresh-btn {
+    font-size: 11px; background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: 6px; padding: 3px 10px; cursor: pointer; color: var(--gray-600);
+    font-family: 'Inter', sans-serif; font-weight: 500; transition: background 0.15s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .refresh-btn:hover { background: var(--gray-100); }
+  .refresh-btn.spinning svg { animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* WARN / SUCCESS */
+  .warn { display: none; margin-top: 8px; background: var(--taken-bg); border: 1px solid var(--taken-border); border-radius: var(--radius-sm); padding: 9px 13px; font-size: 13px; color: var(--taken-text); }
+  .success { display: none; background: var(--avail-bg); border: 1px solid var(--avail-border); border-radius: var(--radius-sm); padding: 13px 16px; font-size: 14px; color: var(--avail-text); line-height: 1.6; margin-top: 1rem; }
+
+  /* BUTTON */
+  .submit-btn {
+    width: 100%; background: var(--red); color: var(--white); border: none;
+    padding: 14px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600;
+    cursor: pointer; margin-top: 1rem; font-family: 'Inter', sans-serif;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background 0.15s; letter-spacing: 0.3px;
+  }
+  .submit-btn:hover:not(:disabled) { background: #a50d25; }
+  .submit-btn:disabled { background: var(--gray-400); cursor: not-allowed; }
+
+  /* PAYMENT */
+  .bank-table { width: 100%; font-size: 13px; }
+  .bank-table tr td { padding: 7px 0; border-bottom: 1px solid var(--gray-200); }
+  .bank-table tr:last-child td { border-bottom: none; }
+  .bank-table .key { color: var(--gray-400); width: 45%; }
+  .bank-table .val { font-weight: 600; color: var(--gray-800); text-align: right; }
+  .cost-line { display: flex; justify-content: space-between; align-items: baseline; padding-top: 12px; }
+  .cost-label { font-size: 13px; color: var(--gray-400); }
+  .cost-amount { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--gray-800); letter-spacing: 1px; }
+
+  /* HOW IT WORKS */
+  .steps-card { background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.35rem; margin-bottom: 1.1rem; }
+  .step { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .step:last-child { margin-bottom: 0; }
+  .step-num { min-width: 22px; height: 22px; background: var(--red); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .step-text { font-size: 13px; color: var(--gray-600); line-height: 1.55; }
+
+  /* SETUP NOTICE */
+  .setup-notice {
+    background: #fff8e6; border: 1px solid var(--taken-border);
+    border-radius: var(--radius); padding: 1.1rem 1.35rem; margin-bottom: 1.1rem;
+    font-size: 13px; color: var(--taken-text); line-height: 1.6;
+  }
+  .setup-notice strong { display: block; margin-bottom: 6px; font-size: 14px; }
+  .setup-notice code { background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  .setup-notice .hide-btn { margin-top: 10px; font-size: 12px; background: none; border: 1px solid var(--taken-border); padding: 4px 12px; border-radius: 6px; cursor: pointer; color: var(--taken-text); font-family: 'Inter', sans-serif; }
+
+  .footer-bar { height: 5px; background: linear-gradient(90deg, var(--red), var(--gold), var(--green)); border-radius: 3px; margin-top: 1.5rem; }
+
+  /* STATUS DOT */
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+  .status-dot.live { background: #2ecc71; box-shadow: 0 0 0 2px rgba(46,204,113,0.3); }
+  .status-dot.loading { background: var(--gold); }
+  .status-dot.error { background: var(--red); }
+
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    body { padding: 1rem 0.75rem; }
+    .hero-title { font-size: 40px; }
+    .hero-year { font-size: 40px; }
+    .hero-body { padding: 1.5rem 1rem 1.25rem; }
+    .hero-badge { font-size: 12px; padding: 6px 14px; }
+    .two-col { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stat-card { padding: 0.75rem; gap: 8px; }
+    .stat-icon { font-size: 18px; }
+    .stat-val { font-size: 13px; }
+    .groups-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+    .group-card { padding: 8px 9px; }
+    .group-letter { font-size: 9px; }
+    .team { font-size: 11px; }
+    .card { padding: 1rem; }
+    .card-title { font-size: 10px; }
+    .field input, .field select { font-size: 16px; } /* prevents iOS zoom on focus */
+    .submit-btn { font-size: 16px; padding: 14px; }
+    .tracker-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .bank-table { font-size: 12px; }
+    .cost-amount { font-size: 26px; }
+    .steps-card { padding: 1rem; }
+    #spare-yes-label, #spare-no-label { font-size: 13px; padding: 9px 10px; }
+  }
+
+  @media (max-width: 360px) {
+    .two-col { grid-template-columns: 1fr; }
+    .groups-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-title { font-size: 34px; }
+    .hero-year { font-size: 34px; }
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    body { padding: 1.5rem 1rem; }
+    .groups-grid { grid-template-columns: repeat(3, 1fr); }
+    .field input, .field select { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SETUP NOTICE -->
+  <div class="setup-notice" id="setup-notice" style="display:none">
+    <strong>⚙️ One-time setup needed to enable form submissions</strong>
+    To allow the form to write to Google Sheets, you need to deploy a free Apps Script endpoint once:<br><br>
+    1. Open your <a href="https://docs.google.com/spreadsheets/d/1vVz620aRG1NvdTP15_XsqDmzi1Bk4HmXrVtSFPfKltw" target="_blank" style="color:var(--taken-text)">Google Sheet</a> → <strong>Extensions → Apps Script</strong><br>
+    2. Paste the script from the <code>APPS_SCRIPT_CODE</code> comment at the bottom of this HTML file<br>
+    3. Click <strong>Deploy → New deployment → Web app</strong> → set "Who has access" to <strong>Anyone</strong> → Deploy<br>
+    4. Copy the Web App URL and paste it into the <code>APPS_SCRIPT_URL</code> variable in this file<br><br>
+    The tracker (reading) works immediately without this step — only submissions need it.
+    <br><button class="hide-btn" onclick="document.getElementById('setup-notice').style.display='none'">Hide this notice</button>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bar"></div>
+    <div class="hero-body">
+      <div class="hero-org">Race Roster Oceania</div>
+      <div class="hero-title">World Cup</div>
+      <div class="hero-year">2026</div>
+      <div class="hero-hosts">🇺🇸 USA &nbsp;·&nbsp; 🇨🇦 Canada &nbsp;·&nbsp; 🇲🇽 Mexico</div>
+      <div class="hero-badge">⚽ Office Sweepstake</div>
+      <div class="hero-dates">11 June – 19 July 2026</div>
+    </div>
+    <div style="height:4px;background:linear-gradient(90deg,#C8102E 0%,#F5A623 50%,#1A6B3C 100%)"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="stat-card"><div class="stat-icon">🎟️</div><div><div class="stat-label">Entry cost</div><div class="stat-val">$10 per group</div></div></div>
+    <div class="stat-card"><div class="stat-icon">🏆</div><div><div class="stat-label">Bonus prize</div><div class="stat-val">Predict the winner</div></div></div>
+  </div>
+
+  <!-- GROUPS -->
+  <div class="card">
+    <div class="card-title"><span class="dot"></span> The 12 groups — 48 teams</div>
+    <div class="groups-grid">
+      <div class="group-card"><div class="group-letter">Group A</div><div class="team">🇲🇽 Mexico</div><div class="team">🇰🇷 South Korea</div><div class="team">🇿🇦 South Africa</div><div class="team">🇨🇿 Czechia</div></div>
+      <div class="group-card"><div class="group-letter">Group B</div><div class="team">🇨🇦 Canada</div><div class="team">🇨🇭 Switzerland</div><div class="team">🇶🇦 Qatar</div><div class="team">🇧🇦 Bosnia-Herz.</div></div>
+      <div class="group-card"><div class="group-letter">Group C</div><div class="team">🇧🇷 Brazil</div><div class="team">🇲🇦 Morocco</div><div class="team">🇭🇹 Haiti</div><div class="team">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</div></div>
+      <div class="group-card"><div class="group-letter">Group D</div><div class="team">🇺🇸 USA</div><div class="team">🇵🇾 Paraguay</div><div class="team">🇦🇺 Australia</div><div class="team">🇹🇷 Turkey</div></div>
+      <div class="group-card"><div class="group-letter">Group E</div><div class="team">🇩🇪 Germany</div><div class="team">🇨🇼 Curaçao</div><div class="team">🇨🇮 Ivory Coast</div><div class="team">🇪🇨 Ecuador</div></div>
+      <div class="group-card"><div class="group-letter">Group F</div><div class="team">🇳🇱 Netherlands</div><div class="team">🇯🇵 Japan</div><div class="team">🇸🇪 Sweden</div><div class="team">🇹🇳 Tunisia</div></div>
+      <div class="group-card"><div class="group-letter">Group G</div><div class="team">🇧🇪 Belgium</div><div class="team">🇪🇬 Egypt</div><div class="team">🇮🇷 Iran</div><div class="team">🇳🇿 New Zealand</div></div>
+      <div class="group-card"><div class="group-letter">Group H</div><div class="team">🇪🇸 Spain</div><div class="team">🇨🇻 Cape Verde</div><div class="team">🇸🇦 Saudi Arabia</div><div class="team">🇺🇾 Uruguay</div></div>
+      <div class="group-card"><div class="group-letter">Group I</div><div class="team">🇫🇷 France</div><div class="team">🇸🇳 Senegal</div><div class="team">🇮🇶 Iraq</div><div class="team">🇳🇴 Norway</div></div>
+      <div class="group-card"><div class="group-letter">Group J</div><div class="team">🇦🇷 Argentina</div><div class="team">🇩🇿 Algeria</div><div class="team">🇦🇹 Austria</div><div class="team">🇯🇴 Jordan</div></div>
+      <div class="group-card"><div class="group-letter">Group K</div><div class="team">🇵🇹 Portugal</div><div class="team">🇨🇩 DR Congo</div><div class="team">🇺🇿 Uzbekistan</div><div class="team">🇨🇴 Colombia</div></div>
+      <div class="group-card"><div class="group-letter">Group L</div><div class="team">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</div><div class="team">🇭🇷 Croatia</div><div class="team">🇬🇭 Ghana</div><div class="team">🇵🇦 Panama</div></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="card">
+    <div class="card-title"><span class="dot"></span> Your details</div>
+    <div class="field">
+      <label for="inp-name">Full name</label>
+      <input type="text" id="inp-name" placeholder="e.g. Alex Smith" oninput="updateRef()">
+    </div>
+    <div class="field">
+      <label for="inp-email">Email address</label>
+      <input type="email" id="inp-email" placeholder="you@example.com">
+    </div>
+    <div class="field">
+      <label for="winner-select">Who do you think will win? <span>— first come, first served</span></label>
+      <select id="winner-select" onchange="onPickChange(this)">
+        <option value="">— pick a team —</option>
+        <optgroup label="Group A"><option value="Mexico">🇲🇽 Mexico</option><option value="South Korea">🇰🇷 South Korea</option><option value="South Africa">🇿🇦 South Africa</option><option value="Czechia">🇨🇿 Czechia</option></optgroup>
+        <optgroup label="Group B"><option value="Canada">🇨🇦 Canada</option><option value="Switzerland">🇨🇭 Switzerland</option><option value="Qatar">🇶🇦 Qatar</option><option value="Bosnia-Herzegovina">🇧🇦 Bosnia-Herz.</option></optgroup>
+        <optgroup label="Group C"><option value="Brazil">🇧🇷 Brazil</option><option value="Morocco">🇲🇦 Morocco</option><option value="Haiti">🇭🇹 Haiti</option><option value="Scotland">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</option></optgroup>
+        <optgroup label="Group D"><option value="USA">🇺🇸 USA</option><option value="Paraguay">🇵🇾 Paraguay</option><option value="Australia">🇦🇺 Australia</option><option value="Turkey">🇹🇷 Turkey</option></optgroup>
+        <optgroup label="Group E"><option value="Germany">🇩🇪 Germany</option><option value="Curacao">🇨🇼 Curaçao</option><option value="Ivory Coast">🇨🇮 Ivory Coast</option><option value="Ecuador">🇪🇨 Ecuador</option></optgroup>
+        <optgroup label="Group F"><option value="Netherlands">🇳🇱 Netherlands</option><option value="Japan">🇯🇵 Japan</option><option value="Sweden">🇸🇪 Sweden</option><option value="Tunisia">🇹🇳 Tunisia</option></optgroup>
+        <optgroup label="Group G"><option value="Belgium">🇧🇪 Belgium</option><option value="Egypt">🇪🇬 Egypt</option><option value="Iran">🇮🇷 Iran</option><option value="New Zealand">🇳🇿 New Zealand</option></optgroup>
+        <optgroup label="Group H"><option value="Spain">🇪🇸 Spain</option><option value="Cape Verde">🇨🇻 Cape Verde</option><option value="Saudi Arabia">🇸🇦 Saudi Arabia</option><option value="Uruguay">🇺🇾 Uruguay</option></optgroup>
+        <optgroup label="Group I"><option value="France">🇫🇷 France</option><option value="Senegal">🇸🇳 Senegal</option><option value="Iraq">🇮🇶 Iraq</option><option value="Norway">🇳🇴 Norway</option></optgroup>
+        <optgroup label="Group J"><option value="Argentina">🇦🇷 Argentina</option><option value="Algeria">🇩🇿 Algeria</option><option value="Austria">🇦🇹 Austria</option><option value="Jordan">🇯🇴 Jordan</option></optgroup>
+        <optgroup label="Group K"><option value="Portugal">🇵🇹 Portugal</option><option value="DR Congo">🇨🇩 DR Congo</option><option value="Uzbekistan">🇺🇿 Uzbekistan</option><option value="Colombia">🇨🇴 Colombia</option></optgroup>
+        <optgroup label="Group L"><option value="England">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</option><option value="Croatia">🇭🇷 Croatia</option><option value="Ghana">🇬🇭 Ghana</option><option value="Panama">🇵🇦 Panama</option></optgroup>
+      </select>
+      <div class="warn" id="warn-box">⚠️ <span id="warn-text"></span></div>
+
+      <div class="tracker">
+        <div class="tracker-head">
+          <span><span class="status-dot loading" id="status-dot"></span> <span id="status-label">Loading picks…</span></span>
+          <button class="refresh-btn" id="refresh-btn" onclick="loadTaken()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+            Refresh
+          </button>
+        </div>
+        <div class="tracker-chips" id="tracker-chips"></div>
+        <div class="tracker-legend">
+          <span><span class="legend-swatch" style="background:var(--avail-bg);border-color:var(--avail-border)"></span>Available</span>
+          <span><span class="legend-swatch" style="background:var(--taken-bg);border-color:var(--taken-border)"></span>Taken</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:1.1rem">
+      <label>Do you want to be added to the draw for the final spare group and double your chances of winning?</label>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+        <label style="display:flex;align-items:center;gap:10px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:12px 14px;cursor:pointer;font-size:14px;font-weight:500;color:var(--gray-800);line-height:1.4" id="spare-yes-label">
+          <input type="radio" name="spare" id="spare-yes" value="Yes" onchange="styleSpare()" style="width:auto;flex-shrink:0"> Yes, add me to the draw ⚽
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:12px 14px;cursor:pointer;font-size:14px;font-weight:500;color:var(--gray-800);line-height:1.4" id="spare-no-label">
+          <input type="radio" name="spare" id="spare-no" value="No" onchange="styleSpare()" style="width:auto;flex-shrink:0"> No thanks
+        </label>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitEntry()">
+      Submit my entry →
+    </button>
+    <div class="success" id="success-box"></div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="card">
+    <div class="card-title"><span class="dot"></span> Payment — bank transfer</div>
+    <table class="bank-table">
+      <tr><td class="key">BSB</td><td class="val">923-100</td></tr>
+      <tr><td class="key">Account number</td><td class="val">308 350 605</td></tr>
+      <tr><td class="key">Reference</td><td class="val" id="ref-display">WC26 + your name</td></tr>
+    </table>
+    <div class="cost-line">
+      <span class="cost-label">Total to transfer</span>
+      <span class="cost-amount">$10</span>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="steps-card">
+    <div class="card-title" style="margin-bottom:1rem"><span class="dot"></span> How it works</div>
+    <div class="step"><div class="step-num">1</div><div class="step-text">Fill in this form with your name, email and winner prediction.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Pay $10 via bank transfer using your name as the reference.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Winner picks are first come, first served — no duplicates.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">All 12 groups drawn randomly — one per person, every group assigned.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text">If the World Cup winner comes from your group, you win! Correct prediction earns the bonus prize too.</div></div>
+  </div>
+
+  <div class="footer-bar"></div>
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const SHEET_ID = '1vVz620aRG1NvdTP15_XsqDmzi1Bk4HmXrVtSFPfKltw';
+// Paste your Apps Script Web App URL below after setup:
+let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyg2R9VnuUp1Fpc0SkzBwEs0Iil9f0AuZRkmSJHFB9YCin6J4oBGeYqsxR4G0FZTTJl/exec';
+// ─────────────────────────────────────────────────────────────────────────────
+
+const ALL_TEAMS = ["Mexico","South Korea","South Africa","Czechia","Canada","Switzerland","Qatar","Bosnia-Herzegovina","Brazil","Morocco","Haiti","Scotland","USA","Paraguay","Australia","Turkey","Germany","Curacao","Ivory Coast","Ecuador","Netherlands","Japan","Sweden","Tunisia","Belgium","Egypt","Iran","New Zealand","Spain","Cape Verde","Saudi Arabia","Uruguay","France","Senegal","Iraq","Norway","Argentina","Algeria","Austria","Jordan","Portugal","DR Congo","Uzbekistan","Colombia","England","Croatia","Ghana","Panama"];
+
+let takenPicks = [];
+
+// JSONP helper — works cross-origin on all browsers including mobile Safari
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cb = '__cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    let done = false;
+    const timer = setTimeout(() => {
+      if (!done) { done = true; cleanup(); reject(new Error('Timeout')); }
+    }, 12000);
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cb];
+      const el = document.getElementById(cb);
+      if (el) el.remove();
+    }
+    window[cb] = function(data) {
+      if (!done) { done = true; cleanup(); resolve(data); }
+    };
+    const script = document.createElement('script');
+    script.id = cb;
+    const sep = url.includes('?') ? '&' : '?';
+    script.src = url + sep + 'callback=' + cb;
+    script.onerror = () => { if (!done) { done = true; cleanup(); reject(new Error('Script error')); } };
+    document.head.appendChild(script);
+  });
+}
+
+async function loadTaken() {
+  const btn = document.getElementById('refresh-btn');
+  const dot = document.getElementById('status-dot');
+  const lbl = document.getElementById('status-label');
+  btn.classList.add('spinning');
+  dot.className = 'status-dot loading';
+  lbl.textContent = 'Loading…';
+  try {
+    const picks = await jsonp(APPS_SCRIPT_URL + '?action=read');
+    takenPicks = Array.isArray(picks) ? picks : [];
+    dot.className = 'status-dot live';
+    lbl.textContent = 'Live · ' + takenPicks.length + ' pick' + (takenPicks.length !== 1 ? 's' : '') + ' made';
+  } catch(e) {
+    console.error('loadTaken error:', e);
+    dot.className = 'status-dot error';
+    lbl.textContent = 'Could not load picks';
+    takenPicks = [];
+  }
+  btn.classList.remove('spinning');
+  renderTracker();
+  updateSelectOptions();
+}
+
+function renderTracker() {
+  const container = document.getElementById('tracker-chips');
+  container.innerHTML = '';
+  ALL_TEAMS.forEach(t => {
+    const taken = takenPicks.includes(t);
+    const chip = document.createElement('span');
+    chip.className = 'chip ' + (taken ? 'taken' : 'available');
+    chip.textContent = t + (taken ? ' ✓' : '');
+    container.appendChild(chip);
+  });
+}
+
+function updateSelectOptions() {
+  const sel = document.getElementById('winner-select');
+  const FLAG = {'Mexico':'🇲🇽','South Korea':'🇰🇷','South Africa':'🇿🇦','Czechia':'🇨🇿','Canada':'🇨🇦','Switzerland':'🇨🇭','Qatar':'🇶🇦','Bosnia-Herzegovina':'🇧🇦','Brazil':'🇧🇷','Morocco':'🇲🇦','Haiti':'🇭🇹','Scotland':'🏴󠁧󠁢󠁳󠁣󠁴󠁿','USA':'🇺🇸','Paraguay':'🇵🇾','Australia':'🇦🇺','Turkey':'🇹🇷','Germany':'🇩🇪','Curacao':'🇨🇼','Ivory Coast':'🇨🇮','Ecuador':'🇪🇨','Netherlands':'🇳🇱','Japan':'🇯🇵','Sweden':'🇸🇪','Tunisia':'🇹🇳','Belgium':'🇧🇪','Egypt':'🇪🇬','Iran':'🇮🇷','New Zealand':'🇳🇿','Spain':'🇪🇸','Cape Verde':'🇨🇻','Saudi Arabia':'🇸🇦','Uruguay':'🇺🇾','France':'🇫🇷','Senegal':'🇸🇳','Iraq':'🇮🇶','Norway':'🇳🇴','Argentina':'🇦🇷','Algeria':'🇩🇿','Austria':'🇦🇹','Jordan':'🇯🇴','Portugal':'🇵🇹','DR Congo':'🇨🇩','Uzbekistan':'🇺🇿','Colombia':'🇨🇴','England':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Croatia':'🇭🇷','Ghana':'🇬🇭','Panama':'🇵🇦'};
+  const DISPLAY = {'Bosnia-Herzegovina':'Bosnia-Herz.','Curacao':'Curaçao'};
+  Array.from(sel.options).forEach(opt => {
+    if (!opt.value) return;
+    const taken = takenPicks.includes(opt.value);
+    opt.disabled = taken;
+    const flag = FLAG[opt.value] || '';
+    const name = DISPLAY[opt.value] || opt.value;
+    opt.text = flag + ' ' + name + (taken ? ' — taken' : '');
+  });
+}
+
+function onPickChange(sel) {
+  const val = sel.value;
+  const warn = document.getElementById('warn-box');
+  if (val && takenPicks.includes(val)) {
+    warn.style.display = 'block';
+    document.getElementById('warn-text').textContent = val + ' has already been picked. Please choose another team.';
+    sel.value = '';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+function updateRef() {
+  const name = document.getElementById('inp-name').value.trim();
+  document.getElementById('ref-display').textContent = name ? 'WC26 ' + name : 'WC26 + your name';
+}
+
+function styleSpare() {
+  const yes = document.getElementById('spare-yes').checked;
+  const no  = document.getElementById('spare-no').checked;
+  document.getElementById('spare-yes-label').style.borderColor = yes ? 'var(--green)' : 'var(--gray-200)';
+  document.getElementById('spare-yes-label').style.background  = yes ? '#edf7f0' : 'var(--gray-100)';
+  document.getElementById('spare-no-label').style.borderColor  = no  ? 'var(--gray-400)' : 'var(--gray-200)';
+  document.getElementById('spare-no-label').style.background   = no  ? 'var(--gray-100)' : 'var(--gray-100)';
+}
+
+async function submitEntry() {
+  const name  = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const pick  = document.getElementById('winner-select').value;
+  const spareEl = document.querySelector('input[name="spare"]:checked');
+
+  if (!name || !email || !pick || !spareEl) {
+    alert('Please fill in all fields including the spare group question.');
+    return;
+  }
+  if (takenPicks.includes(pick)) {
+    document.getElementById('warn-box').style.display = 'block';
+    document.getElementById('warn-text').textContent = pick + ' is already taken. Please choose another team.';
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const params = { name, email, pick, spare: spareEl.value, action: 'write' };
+    await jsonp(APPS_SCRIPT_URL + '?' + new URLSearchParams(params).toString());
+
+    takenPicks.push(pick);
+    renderTracker();
+    updateSelectOptions();
+
+    const success = document.getElementById('success-box');
+    success.style.display = 'block';
+    success.innerHTML = '✅ <strong>Entry submitted!</strong><br>Now transfer $10 · BSB 923-100 · Acc 308 350 605 · Ref: <strong>WC26 ' + name + '</strong>';
+    btn.style.display = 'none';
+
+    document.getElementById('inp-name').value = '';
+    document.getElementById('inp-email').value = '';
+    document.getElementById('winner-select').value = '';
+    document.getElementById('spare-yes').checked = false;
+    document.getElementById('spare-no').checked = false;
+    styleSpare();
+    updateRef();
+  } catch(e) {
+    console.error('submit error:', e);
+    btn.disabled = false;
+    btn.textContent = 'Submit my entry →';
+    alert('Something went wrong. Please try again.');
+  }
+}
+
+// Load on start
+loadTaken();
+setInterval(loadTaken, 30000);
+</script>
+
+<!--
+APPS_SCRIPT_CODE — paste this into Extensions > Apps Script in your Google Sheet:
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([data.name, data.email, data.pick, 'No', 'TBD', new Date()]);
+  return ContentService.createTextOutput('ok');
+}
+
+Then: Deploy > New deployment > Web app > Anyone > Deploy
+Copy the URL and paste it into the APPS_SCRIPT_URL variable in this file.
+-->
+</html>
